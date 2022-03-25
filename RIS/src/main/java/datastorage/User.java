@@ -46,6 +46,11 @@ public class User {
     }
 
     public User() {
+        this.userID = "";
+        this.email = "";
+        this.fullName = "";
+        this.role = 0;
+        this.roleVal = "";
     }
 
     public User(String userID, String email, String fullName, String username, int role, boolean enabled, String roleVal) {

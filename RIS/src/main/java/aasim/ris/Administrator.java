@@ -1,7 +1,6 @@
 package aasim.ris;
 
 import static aasim.ris.App.ds;
-import static aasim.ris.App.url;
 import datastorage.Appointment;
 import datastorage.InputValidation;
 import datastorage.Order;
@@ -11,15 +10,11 @@ import datastorage.User;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -44,7 +39,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.postgresql.ds.PGSimpleDataSource;
 
 public class Administrator extends Stage {
 
@@ -147,7 +141,7 @@ public class Administrator extends Stage {
         TableColumn fullNameCol = new TableColumn("Full Name");
         TableColumn usernameCol = new TableColumn("Username");
         TableColumn roleCol = new TableColumn("Role");
-        TableColumn enabledCol = new TableColumn("Enabled / Disabled");
+        TableColumn enabledCol = new TableColumn("Enabled");
         TableColumn buttonCol = new TableColumn("Update User");
 
         //And all of the Value setting
@@ -414,7 +408,7 @@ public class Administrator extends Stage {
             }
 
             private void disableUser() {
-                if (z.getUserID() != App.user.getUserID()) {
+                if (!z.getUserID().equals(App.user.getUserID())) {
                     boolean allCool = true;
                     allCool = InputValidation.validateConfirm(input.getText());
                     if (allCool) {
@@ -428,7 +422,11 @@ public class Administrator extends Stage {
                         x.close();
                     }
                 } else {
-
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setTitle("Error");
+                    a.setHeaderText("Cannot Disable Self");
+                    a.setContentText("You cannot disable yourself. \n");
+                    a.show();
                 }
             }
         });

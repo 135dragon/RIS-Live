@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
@@ -37,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -92,6 +91,7 @@ public class Login extends Stage {
         this.setMaximized(true);
         this.show();
         connectToDatabase();
+
     }
 
     private void changeGridPane() {
@@ -127,6 +127,7 @@ public class Login extends Stage {
             Connection conn = ds.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
+
             while (rs.next()) {
                 String userId = rs.getString("user_id");
                 String fullName = rs.getString("full_name");
@@ -140,11 +141,17 @@ public class Login extends Stage {
                     App.user.setPfp(null);
                 }
             }
+
+//
             //
             rs.close();
             stmt.close();
             conn.close();
             //
+
+            if (App.user.getRole() == 0) {
+                throw new SQLException("Invalid Username / Password");
+            }
             if (App.user.getRole() == 2) {
                 //Receptionist
                 Stage x = new Receptionist();
@@ -182,8 +189,22 @@ public class Login extends Stage {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            Alert a = new Alert(AlertType.INFORMATION);
 
+            Alert a = new Alert(AlertType.INFORMATION);
+            a.setTitle("Error");
+            if (e.getMessage().contains("password authentication failed")) {
+                a.setHeaderText("Try Again");
+                a.setContentText("URL Username/Password incorrect. Please correct the url.\n(Restart the Program)");
+                File credentials = new File("../credentials.ris");
+                credentials.delete();
+            } else {
+                a.setHeaderText("Try Again");
+                a.setContentText("Username / Password not found. \nPlease contact an administrator if problem persists. ");
+            }
+            a.show();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            Alert a = new Alert(AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
             a.setContentText("Username / Password not found. \nPlease contact an administrator if problem persists. ");
@@ -205,10 +226,10 @@ public class Login extends Stage {
                 Scene z = new Scene(y);
                 z.getStylesheets().add("file:stylesheet.css");
                 x.setScene(z);
-
-                TextArea area = new TextArea("Insert URL");
+                Text text = new Text("Insert URL");
+                TextArea area = new TextArea();
                 Button submit = new Button("Submit");
-                HBox container = new HBox(area, submit);
+                HBox container = new HBox(text, area, submit);
                 y.setCenter(container);
                 x.show();
                 submit.setOnAction(new EventHandler<ActionEvent>() {
@@ -222,7 +243,6 @@ public class Login extends Stage {
                                 outputStream.write(strToBytes);
                                 App.url = area.getText();
                                 ds.setUrl(Optional.ofNullable(url).orElseThrow(() -> new IllegalArgumentException("JDBC_DATABASE_URL is not set.")));
-
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (IOException ex) {
