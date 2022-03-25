@@ -37,6 +37,7 @@ public class App extends Application {
     public static void main1(String[] args) {
         //Create
         ds.setSslRootCert("root.crt");
+
 //        createAndPopulateTables(fileName); 
 //        populateTablesAdmin(fileName);
 //        createAppointmentTable(fileName);
@@ -49,6 +50,8 @@ public class App extends Application {
 //        createRadReportTable(fileName);
 //        populateTablesStatus(fileName);
 //////        Duplication bug if you run these multiple times, leave commented out
+//        String sql = "DELETE FROM users;";
+//        executeSQLStatement(sql);
         launch();
     }
 

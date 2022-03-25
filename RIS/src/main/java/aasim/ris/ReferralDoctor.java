@@ -888,6 +888,20 @@ public class ReferralDoctor extends Stage {
             @Override
             public void handle(ActionEvent e) {
                 if (!dropdown.getValue().toString().isBlank()) {
+
+                    //Validation
+                    if (!InputValidation.validateConfirm(confirm.getText())) {
+                        return;
+                    }
+                    if (!getPatOrders(z.getPatientID()).contains(dropdown.getValue().toString())) {
+                        Alert a = new Alert(Alert.AlertType.INFORMATION);
+                        a.setTitle("Error");
+                        a.setHeaderText("Try Again");
+                        a.setContentText("Patient does not have that order.\n");
+                        a.show();
+                        return;
+                    }
+                    //
                     removeOrder(z, dropdown.getValue().toString());
                     x.close();
                 }
