@@ -2,6 +2,7 @@ package aasim.ris;
 
 import static aasim.ris.App.ds;
 import static aasim.ris.App.url;
+import datastorage.InputValidation;
 import datastorage.User;
 import java.io.BufferedReader;
 import java.io.File;
@@ -91,7 +92,6 @@ public class Login extends Stage {
         this.setMaximized(true);
         this.show();
         connectToDatabase();
-
     }
 
     private void changeGridPane() {
@@ -121,6 +121,15 @@ public class Login extends Stage {
 
         String username = inputUsername.getText();
         String password = inputPassword.getText();
+
+        if (!InputValidation.validateUsername(username)) {
+            return;
+        }
+
+        if (!InputValidation.validatePassword(password)) {
+            return;
+        }
+
         String sql = "Select * FROM users WHERE username = '" + username + "' AND password = '" + password + "' AND enabled = true;";
 
         try {

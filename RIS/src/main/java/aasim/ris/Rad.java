@@ -396,8 +396,17 @@ public class Rad extends Stage {
     }
 
     private void addReportToDatabase(String report, String apptId) {
-        String sql = "INSERT INTO report (apptID, writtenreport) VALUES ('" + apptId + "', '" + report + "');";
-        App.executeSQLStatement(sql);
+        String sql = "INSERT INTO report (apptID, writtenreport) VALUES ('" + apptId + "', ?);";
+        try {
+            Connection conn = ds.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, report);
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private ArrayList<Pair> retrieveUploadedImages(String apptId) {

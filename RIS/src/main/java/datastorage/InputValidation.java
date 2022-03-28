@@ -27,6 +27,30 @@ public class InputValidation {
         return true;
     }
 
+    public static boolean validateUsername(String name) {
+        if (name.isBlank() || name.contains("'")) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Error");
+            a.setHeaderText("Try Again");
+            a.setContentText("Please enter a valid username.");
+            a.show();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validatePassword(String pass) {
+        if (pass.isBlank() || pass.contains("'")) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Error");
+            a.setHeaderText("Try Again");
+            a.setContentText("Please enter a valid password.");
+            a.show();
+            return false;
+        }
+        return true;
+    }
+
     public static boolean validateEmail(String email) {
         if (email.isBlank() || !email.matches("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -79,7 +103,7 @@ public class InputValidation {
     }
 
     public static boolean validateAddress(String address) {
-        if (address.isBlank()) {
+        if (address.isBlank() || address.contains("'")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
@@ -91,7 +115,7 @@ public class InputValidation {
     }
 
     public static boolean validateInsurance(String insurance) {
-        if (insurance.isBlank()) {
+        if (insurance.isBlank() || insurance.contains("'")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
@@ -127,6 +151,7 @@ public class InputValidation {
                 a.show();
                 return false;
             }
+
         }
         return true;
     }

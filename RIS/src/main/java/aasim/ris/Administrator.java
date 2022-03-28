@@ -299,6 +299,13 @@ public class Administrator extends Stage {
                 if (!InputValidation.validateEmail(email.getText())) {
                     return;
                 }
+                if (!InputValidation.validateUsername(username.getText())) {
+                    return;
+                }
+                if (!InputValidation.validatePassword(password.getText())) {
+                    return;
+                }
+
                 insertUserIntoDatabase(email.getText(), name.getText(), username.getText(), password.getText(), role.getValue().toString());
                 usersPageView();
                 x.close();
@@ -362,9 +369,7 @@ public class Administrator extends Stage {
             }
 
             private void updateEmail() {
-                boolean allCool = true;
-                allCool = InputValidation.validateEmail(input.getText());
-                if (allCool) {
+                if (InputValidation.validateEmail(input.getText())) {
                     String sql = "UPDATE users SET email = '" + input.getText() + "' WHERE user_id = '" + z.getUserID() + "';";
                     App.executeSQLStatement(sql);
                     usersPageView();
@@ -409,9 +414,7 @@ public class Administrator extends Stage {
 
             private void disableUser() {
                 if (!z.getUserID().equals(App.user.getUserID())) {
-                    boolean allCool = true;
-                    allCool = InputValidation.validateConfirm(input.getText());
-                    if (allCool) {
+                    if (InputValidation.validateConfirm(input.getText())) {
                         boolean enabled = false;
                         if (!z.getEnabled()) {
                             enabled = true;
