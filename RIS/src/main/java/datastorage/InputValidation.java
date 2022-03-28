@@ -4,6 +4,9 @@
  */
 package datastorage;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javafx.scene.control.Alert;
 
 /**
@@ -60,6 +63,21 @@ public class InputValidation {
         return true;
     }
 
+    public static boolean validateFuture(String date) {
+        if (!validateDate(date)) {
+            return false;
+        }
+        if (LocalDate.parse(date).isBefore(LocalDate.now())) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Error");
+            a.setHeaderText("Try Again");
+            a.setContentText("Date has already past.\nPlease insert a valid date.\n");
+            a.show();
+            return false;
+        }
+        return true;
+    }
+
     public static boolean validateAddress(String address) {
         if (address.isBlank()) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -85,13 +103,30 @@ public class InputValidation {
     }
 
     public static boolean validateTime(String time) {
-        if (time.isBlank() || !time.matches("^[0-9]+:[0-9]+$")) {
+        if (time.isBlank() || !time.matches("(^([0-9]|[0-1][0-9]|[2][0-3]):([0-5][0-9])$)")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
             a.setContentText("Please enter a valid Time.\n");
             a.show();
             return false;
+        }
+        return true;
+    }
+
+    public static boolean validateFutureTime(String date, String time) {
+        if (!validateTime(time)) {
+            return false;
+        }
+        if (LocalDate.parse(date).isEqual(LocalDate.now())) {
+            if (LocalTime.parse(time).isBefore(LocalTime.now())) {
+                Alert a = new Alert(Alert.AlertType.INFORMATION);
+                a.setTitle("Error");
+                a.setHeaderText("Try Again");
+                a.setContentText("Time Inputted has already past.\nPlease insert a valid time.\n");
+                a.show();
+                return false;
+            }
         }
         return true;
     }

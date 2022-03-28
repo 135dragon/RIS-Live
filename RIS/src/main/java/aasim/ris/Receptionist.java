@@ -338,10 +338,10 @@ public class Receptionist extends Stage {
                     @Override
                     public void handle(ActionEvent e) {
                         //validation here
-                        if (!InputValidation.validateDate(datePicker.getValue().toString())) {
+                        if (!InputValidation.validateFuture(datePicker.getValue().toString())) {
                             return;
                         }
-                        if (!InputValidation.validateTime(time.getText())) {
+                        if (!InputValidation.validateFutureTime(datePicker.getValue().toString(), time.getText())) {
                             return;
                         }
                         //end validation
@@ -479,7 +479,7 @@ public class Receptionist extends Stage {
                 z.setAddress(address.getText());
                 z.setEmail(email.getText());
                 z.setInsurance(insurance.getText());
-                String sql = "UPDATE patients SET email = '" + email.getText() + "', address = '" + address.getText() + "', insurance = '" + insurance.getText() + "';";
+                String sql = "UPDATE patients SET email = '" + email.getText() + "', address = '" + address.getText() + "', insurance = '" + insurance.getText() + "' WHERE patientID = '" + z.getPatientID() + "';";
                 App.executeSQLStatement(sql);
                 for (PatientAlert a : alertsToAddForThisPatient) {
                     sql = "INSERT INTO alertsPatientConnector VALUES ( '" + z.getPatientID() + "', '" + a.getAlertID() + "');";
@@ -751,10 +751,10 @@ public class Receptionist extends Stage {
             submit.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent e) {
-                    if (!InputValidation.validateDate(datePicker.getValue().toString())) {
+                    if (!InputValidation.validateFuture(datePicker.getValue().toString())) {
                         return;
                     }
-                    if (!InputValidation.validateTime(time.getText())) {
+                    if (!InputValidation.validateFutureTime(datePicker.getValue().toString(), time.getText())) {
                         return;
                     }
                     insertAppointment(pat.getPatientID(), orders, datePicker.getValue().toString() + " " + time.getText());

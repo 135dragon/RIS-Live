@@ -655,7 +655,7 @@ public class ReferralDoctor extends Stage {
                 z.setAddress(address.getText());
                 z.setEmail(email.getText());
                 z.setInsurance(insurance.getText());
-                String sql = "UPDATE patients SET email = '" + email.getText() + "', address = '" + address.getText() + "', insurance = '" + insurance.getText() + "';";
+                String sql = "UPDATE patients SET email = '" + email.getText() + "', address = '" + address.getText() + "', insurance = '" + insurance.getText() + "' WHERE patientID = '" + z.getPatientID() + "';";
                 App.executeSQLStatement(sql);
                 for (PatientAlert a : alertsToAddForThisPatient) {
                     sql = "INSERT INTO alertsPatientConnector VALUES ( '" + z.getPatientID() + "', '" + a.getAlertID() + "');";
