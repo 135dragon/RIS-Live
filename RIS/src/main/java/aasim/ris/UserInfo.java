@@ -1,5 +1,6 @@
 package aasim.ris;
 
+import datastorage.InputValidation;
 import datastorage.User;
 import java.io.File;
 import java.io.FileInputStream;
@@ -190,12 +191,7 @@ public class UserInfo extends Stage {
         confirm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent eh) {
-                if (email.getText().isBlank() || !email.getText().matches("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
-                    Alert a = new Alert(Alert.AlertType.INFORMATION);
-                    a.setTitle("Error");
-                    a.setHeaderText("Try Again");
-                    a.setContentText("Please enter a valid Email. \n");
-                    a.show();
+                if (!InputValidation.validateEmail(email.getText())) {
                     return;
                 }
 
@@ -204,6 +200,9 @@ public class UserInfo extends Stage {
                     App.executeSQLStatement(sql);
                     goBack();
                 } else if (password.getText().equals(passwordConfirm.getText())) {
+                    if (!InputValidation.validatePassword(password.getText())) {
+                        return;
+                    }
                     String sql = "UPDATE users SET email = '" + email.getText() + "', password = '" + password.getText() + "' WHERE user_id = '" + App.user.getUserID() + "';";
                     App.executeSQLStatement(sql);
                     goBack();

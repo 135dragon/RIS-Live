@@ -188,7 +188,7 @@ public class Receptionist extends Stage {
     }
 
     //Clear the table, query the database, populate table based on results.
-    //DOES NOT SHOW 'COMPLETED' (statusCode = 4) APPOINTMENTS. 
+    //DOES NOT SHOW 'COMPLETED' APPOINTMENTS. 
     private void populateTable() {
         table.getItems().clear();
         //Connect to database
@@ -314,6 +314,7 @@ public class Receptionist extends Stage {
         VBox container = new VBox(display);
         Scene scene = new Scene(container);
         x.setScene(scene);
+        x.setWidth(750);
         scene.getStylesheets().add("file:stylesheet.css");
         // 
         updateTime.setOnAction(new EventHandler<ActionEvent>() {
@@ -324,7 +325,28 @@ public class Receptionist extends Stage {
                 DatePicker datePicker = new DatePicker();
                 Text text = new Text("Insert Date: ");
                 Text text1 = new Text("Insert Time (HH:MM): ");
-                TextField time = new TextField("HH:MM");
+                ComboBox hours = new ComboBox();
+                for (int i = 0; i < 24; i++) {
+                    String temp = "";
+                    if (i < 10) {
+                        temp = "0" + i;
+                    } else {
+                        temp = "" + i;
+                    }
+                    hours.getItems().add(temp);
+                }
+                ComboBox minutes = new ComboBox();
+                for (int i = 0; i < 60; i += 15) {
+                    String temp = "";
+                    if (i < 10) {
+                        temp = "0" + i;
+                    } else {
+                        temp = "" + i;
+                    }
+                    minutes.getItems().add(temp);
+                }
+                Text colon = new Text(":");
+                HBox time = new HBox(hours, colon, minutes);
 //                text.setPrefWidth(100);
 //                text1.setPrefWidth(150);
                 Button submit = new Button("Submit");
@@ -337,15 +359,16 @@ public class Receptionist extends Stage {
                 submit.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
+                        String full = hours.getValue().toString() + ":" + minutes.getValue().toString();
                         //validation here
                         if (!InputValidation.validateFuture(datePicker.getValue().toString())) {
                             return;
                         }
-                        if (!InputValidation.validateFutureTime(datePicker.getValue().toString(), time.getText())) {
+                        if (!InputValidation.validateFutureTime(datePicker.getValue().toString(), full)) {
                             return;
                         }
                         //end validation
-                        updateTime(datePicker.getValue().toString() + " " + time.getText(), appt.getApptID());
+                        updateTime(datePicker.getValue().toString() + " " + full, appt.getApptID());
                         x.close();
                     }
 
@@ -659,7 +682,32 @@ public class Receptionist extends Stage {
             //time && order
             Text text = new Text("Insert Date: ");
             Text text1 = new Text("Insert Time (HH:MM): ");
-            TextField time = new TextField("HH:MM");
+            ComboBox hours = new ComboBox();
+
+            for (int i = 0; i < 24; i++) {
+                String temp = "";
+                if (i < 10) {
+                    temp = "0" + i;
+                } else {
+                    temp = "" + i;
+                }
+                hours.getItems().add(temp);
+            }
+            ComboBox minutes = new ComboBox();
+            for (int i = 0; i < 60; i += 15) {
+                String temp = "";
+                if (i < 10) {
+                    temp = "0" + i;
+                } else {
+                    temp = "" + i;
+                }
+                minutes.getItems().add(temp);
+            }
+            hours.setMinWidth(75);
+            minutes.setMinWidth(75);
+
+            Text colon = new Text(":");
+            HBox time = new HBox(hours, colon, minutes);
 //            text.setPrefWidth(100);
 //            text1.setPrefWidth(150);
 
@@ -695,6 +743,7 @@ public class Receptionist extends Stage {
             Scene newScene = new Scene(container);
             newScene.getStylesheets().add("file:stylesheet.css");
             this.setScene(newScene);
+            this.setWidth(750);
             hiddenOrderContainer.getChildren().add(tutorial);
             check.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -751,13 +800,14 @@ public class Receptionist extends Stage {
             submit.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent e) {
+                    String full = hours.getValue().toString() + ":" + minutes.getValue().toString();
                     if (!InputValidation.validateFuture(datePicker.getValue().toString())) {
                         return;
                     }
-                    if (!InputValidation.validateFutureTime(datePicker.getValue().toString(), time.getText())) {
+                    if (!InputValidation.validateFutureTime(datePicker.getValue().toString(), full)) {
                         return;
                     }
-                    insertAppointment(pat.getPatientID(), orders, datePicker.getValue().toString() + " " + time.getText());
+                    insertAppointment(pat.getPatientID(), orders, datePicker.getValue().toString() + " " + full);
                 }
             });
 
