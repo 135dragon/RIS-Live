@@ -26,6 +26,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -298,11 +299,10 @@ public class Technician extends Stage {
 
             }
         });
-
         complete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                completeOrder(patID, apptId);
+                completeOrder(patID, apptId, order);
             }
         });
 
@@ -377,7 +377,7 @@ public class Technician extends Stage {
         }
     }
 
-    private void completeOrder(String patID, String apptId) {
+    private void completeOrder(String patID, String apptId, String order) {
         Stage x = new Stage();
         x.initOwner(this);
         x.setMaximized(true);
@@ -389,12 +389,19 @@ public class Technician extends Stage {
 
         ArrayList<Image> list = retrieveUploadedImages(patID, apptId);
         ArrayList<HBox> hbox = new ArrayList<HBox>();
-
+        boolean emptyImages = false;
         if (list.isEmpty()) {
             System.out.println("Error, image list is empty");
+            emptyImages = true;
         } else {
+            String array[] = order.split(",");
+            if (list.size() < array.length) {
+                emptyImages = true;
+            }
+
             int counter = 0;
             int hboxCounter = 0;
+
             for (int i = 0; i < (list.size() / 2) + 1; i++) {
                 hbox.add(new HBox());
             }
@@ -441,16 +448,30 @@ public class Technician extends Stage {
                 x.close();
             }
         });
+        if (!emptyImages) {
+            confirm.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent e) {
+                    updateAppointmentStatus(patID, apptId);
+                    x.close();
+                    techPageOne();
+                }
 
-        confirm.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                updateAppointmentStatus(patID, apptId);
-                x.close();
-                techPageOne();
-            }
+            });
+        } else {
+            confirm.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent e) {
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setTitle("Error");
+                    a.setHeaderText("Try Again");
+                    a.setContentText("Please enter more images. \n");
+                    a.show();
+                }
+            });
 
-        });
+        }
+
     }
 
     private ArrayList<Image> retrieveUploadedImages(String patID, String apptId) {

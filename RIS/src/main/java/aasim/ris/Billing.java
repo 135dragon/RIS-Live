@@ -117,6 +117,12 @@ public class Billing extends Stage {
                 populateTable();
             }
         });
+//         check.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent e) {
+//                billWindow();
+//            }
+//        });
 
         //Searchbar Structure
         searchContainer.setAlignment(Pos.TOP_RIGHT);
@@ -190,7 +196,7 @@ public class Billing extends Stage {
     private void populateTable() {
         table.getItems().clear();
         //Connect to database
-
+        String url = "jdbc:sqlite:C://sqlite/" + App.fileName;
         String sql = "Select appt_id, patient_id, patients.full_name, time, statusCode.status"
                 + " FROM appointments"
                 + " INNER JOIN statusCode ON appointments.statusCode = statusCode.statusID "
@@ -199,7 +205,7 @@ public class Billing extends Stage {
                 + " ORDER BY time ASC;";
 
         try {
-            Connection conn = DriverManager.getConnection(App.url);
+            Connection conn = DriverManager.getConnection(url);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             //
@@ -207,7 +213,7 @@ public class Billing extends Stage {
 
             while (rs.next()) {
                 //What I receieve:  apptId, patientID, fullname, time, address, insurance, referral, status, order
-                Appointment appt = new Appointment(rs.getString("appt_id"), rs.getString("patient_id"), rs.getString("time"), rs.getString("status"), getPatOrders(rs.getString("patient_id"), rs.getString("appt_id")));
+                Appointment appt = new Appointment(rs.getInt("appt_id"), rs.getInt("patient_id"), rs.getString("time"), rs.getString("status"), getPatOrders(rs.getInt("patient_id"), rs.getInt("appt_id")));
                 appt.setFullName(rs.getString("full_name"));
                 list.add(appt);
             }
@@ -232,8 +238,8 @@ public class Billing extends Stage {
         }
     }
 
-    private String getPatOrders(String patientID, String aInt) {
-
+    private String getPatOrders(int patientID, int aInt) {
+        String url = "jdbc:sqlite:C://sqlite/" + App.fileName;
         String sql = "Select orderCodes.orders "
                 + " FROM appointmentsOrdersConnector "
                 + " INNER JOIN orderCodes ON appointmentsOrdersConnector.orderCodeID = orderCodes.orderID "
@@ -241,7 +247,7 @@ public class Billing extends Stage {
 
         String value = "";
         try {
-            Connection conn = DriverManager.getConnection(App.url);
+            Connection conn = DriverManager.getConnection(url);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             //
@@ -281,12 +287,13 @@ public class Billing extends Stage {
 
     private void addBilling() {
         Stage x = new AddBilling();
-        x.setTitle("Add Appointment");
+        x.setTitle("Add Billing");
         x.initOwner(this);
         x.initModality(Modality.WINDOW_MODAL);
         x.showAndWait();
         populateTable();
     }
+
 
     /* 
     // Private Nested Classes Below.
@@ -301,12 +308,42 @@ public class Billing extends Stage {
         Patient pat = null;
         ArrayList<String> orders = new ArrayList<String>();
         DatePicker datePicker = new DatePicker();
+        
+        public void billWindow(){
+        Stage x = new Stage();
+        x.setTitle("Add Appointment");
+        x.initOwner(this);
+        x.initModality(Modality.WINDOW_MODAL);
+        x.show();
+        BorderPane z = new BorderPane();
+        Scene y = new Scene(z);
+        y.getStylesheets().add("file:stylesheet.css");
+        x.setScene(y);
+        VBox container = new VBox();
+        z.setCenter(container);
+        //Your code goes below
+
+
+        //
+        container.getChildren().addAll( /*Everything you create, you add here*/);        
+}
 
         //Class Variables
         AddBilling() {
             TextField patFullName = new TextField("Full Name");
             TextField patEmail = new TextField("Email");
-            Button check = new Button("Pull Patient Information");
+            TextField patInsurance = new TextField("Insurance");
+            TextField patOrder = new TextField("Order");
+            Button check = new Button("Gather Information");
+            check.setOnAction(e -> billWindow() );
+            
+           //check.setOnAction( billWindow() );
+//            billWindow.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent e) {
+//                billWindow();
+//            }
+//        });
             //time && order
             Label text = new Label("Insert Date: ");
             Label text1 = new Label("Insert Time (HH:MM): ");
@@ -320,7 +357,7 @@ public class Billing extends Stage {
             Button submit = new Button("Submit");
             submit.setId("complete");
             //
-            HBox initialContainer = new HBox(patFullName, patEmail, check);
+            HBox initialContainer = new HBox(patFullName, patEmail, patInsurance, patOrder, check);
             initialContainer.setSpacing(10);
             HBox hiddenContainer = new HBox(text, datePicker, text1, time);
             hiddenContainer.setSpacing(10);
@@ -350,7 +387,7 @@ public class Billing extends Stage {
             check.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent e) {
-                    pat = pullPatientInfo(patFullName.getText(), patEmail.getText());
+                    pat = pullPatientInfo(patFullName.getText(), patEmail.getText(),patInsurance.getText(),patOrder.getText());
                     if (pat != null) {
                         check.setVisible(false);
                         Label request = new Label("Orders Requested: ");
@@ -362,52 +399,77 @@ public class Billing extends Stage {
                         hiddenContainer.setVisible(true);
                         hiddenOrderContainer.setVisible(true);
                         hiddenContainer1.setVisible(true);
-
-                        dropdown.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent t) {
-                                orders.add(dropdown.getValue().toString());
-                                Button temp = new Button(dropdown.getValue().toString());
-                                hiddenOrderContainer.getChildren().add(temp);
-                                temp.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent t) {
-                                        if (!dropdown.getValue().toString().isBlank()) {
-                                            orders.remove(temp.getText());
-                                            hiddenOrderContainer.getChildren().remove(temp);
-                                        }
-                                    }
-                                });
-                            }
-                        });
-
-                    }
-                }
-
-            });
-
-            submit.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent e) {
-                    boolean everythingCool = true;
-                    if (everythingCool) {
-//                        insertAppointment(pat.getPatientID(), orders, datePicker.getValue().toString() + " " + time.getText());
-
                     }
                 }
             });
+//            public void billWindow(){
+//        Stage x = new Stage();
+//        x.setTitle("Add Appointment");
+//        x.initOwner(this);
+//        x.initModality(Modality.WINDOW_MODAL);
+//        x.showAndWait();
+//        BorderPane z = new BorderPane();
+//        Scene y = new Scene(z);
+//        y.getStylesheets().add("file:stylesheet.css");
+//        x.setScene(y);
+//        VBox container = new VBox();
+//        z.setCenter(container);
+//        //Your code goes below
+//
+//
+//        //
+//        container.getChildren().addAll( /*Everything you create, you add here*/);        
+//}
+    
+            
 
-        }
+//                        dropdown.setOnAction(new EventHandler<ActionEvent>() {
+//                            @Override
+//                            public void handle(ActionEvent t) {
+//                                orders.add(dropdown.getValue().toString());
+//                                Button temp = new Button(dropdown.getValue().toString());
+//                                hiddenOrderContainer.getChildren().add(temp);
+//                                temp.setOnAction(new EventHandler<ActionEvent>() {
+//                                    @Override
+//                                    public void handle(ActionEvent t) {
+//                                        if (!dropdown.getValue().toString().isBlank()) {
+//                                            orders.remove(temp.getText());
+//                                            hiddenOrderContainer.getChildren().remove(temp);
+//                                        }
+//                                    }
+//                                });
+//                            }
+//                        });
+//
+//                    }
+//                }
 
-        private ComboBox getPatOrders(String patientID) {
+          //  });
 
+// MIGHT USE EVENT LISTENER BELOW
+
+//            submit.setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent e) {
+//                    boolean everythingCool = true;
+//                    if (everythingCool) {
+//                        //insertAppointment(pat.getPatientID(), orders, datePicker.getValue().toString() + " " + time.getText());
+//
+//                    }
+//                }
+//            });
+
+        } //addBilling()
+
+        private ComboBox getPatOrders(int patientID) {
+            String url = "jdbc:sqlite:C://sqlite/" + App.fileName;
             String sql = "Select orderCodes.orders "
                     + " FROM patientOrders "
                     + " INNER JOIN orderCodes ON patientOrders.orderCodeID = orderCodes.orderID "
                     + " WHERE patientID = '" + patientID + "';";
             ComboBox value = new ComboBox();
             try {
-                Connection conn = DriverManager.getConnection(App.url);
+                Connection conn = DriverManager.getConnection(url);
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 //
@@ -425,21 +487,27 @@ public class Billing extends Stage {
             return value;
         }
 
-        private Patient pullPatientInfo(String patFullName, String patEmail) {
+        private Patient pullPatientInfo(String patFullName, String patEmail, String patInsurance, String patOrder) {
             Patient temp = null;
-
             String sql = "Select * "
-                    + " FROM patients"
-                    + " WHERE email = '" + patEmail + "' AND full_name = '" + patFullName + "';";
+           + " FROM patients"
+           + " WHERE email = '" + patEmail + "' AND full_name = '" + patFullName + "' AND patInsurance = '" + patInsurance + "' AND patOrder = '" + patOrder + "';";
+           
+String url = "jdbc:sqlite:C://sqlite/" + App.fileName;
+
+//            String sql = "Select * "
+//                    + " FROM patients"
+//                    + " WHERE email = '" + patEmail + "' AND full_name = '" + patFullName + "';";
+//            String url = "jdbc:sqlite:C://sqlite/" + App.fileName;
 
             try {
-                Connection conn = DriverManager.getConnection(App.url);
+                Connection conn = DriverManager.getConnection(url);
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 //
                 while (rs.next()) {
                     //What I receieve:  patientID, email, full_name, dob, address, insurance
-                    temp = new Patient(rs.getString("patientID"), rs.getString("email"), rs.getString("full_name"), rs.getString("dob"), rs.getString("address"), rs.getString("insurance"));
+                    temp = new Patient(rs.getInt("patientID"), rs.getString("email"), rs.getString("full_name"), rs.getString("dob"), rs.getString("address"), rs.getString("insurance"));
                 }
                 rs.close();
                 stmt.close();
@@ -449,5 +517,6 @@ public class Billing extends Stage {
             }
             return temp;
         }
-    }
+    } // public class addBilling
 }
+
