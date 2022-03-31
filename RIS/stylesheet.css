@@ -82,3 +82,11 @@
     -fx-background-color: grey;
 
 }
+
+#shadeRed{
+    -fx-background-color: rgba(136, 8, 8, 0.1);
+}
+
+#shadeGreen{
+        -fx-background-color: rgba(8, 136, 8, 0.1);    
+}

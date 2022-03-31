@@ -181,7 +181,7 @@ public class ReferralDoctor extends Stage {
         updateStatusCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Couldn't put the table
-        patientIDCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.05));
+        patientIDCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.09));
         fullNameCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
         emailCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.2));
         DOBCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
@@ -488,7 +488,7 @@ public class ReferralDoctor extends Stage {
         statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
         updateStatusCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
         //Set tableColumn sizes
-        apptIDCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.05));
+        apptIDCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.09));
         timeCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
         ordersCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.2));
         statusCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
