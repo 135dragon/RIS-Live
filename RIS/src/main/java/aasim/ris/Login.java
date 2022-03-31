@@ -92,6 +92,12 @@ public class Login extends Stage {
         this.setMaximized(true);
         this.show();
         connectToDatabase();
+        //
+//        String sql = "DROP TABLE appointments;";
+//        App.executeSQLStatement(sql);
+//        App.createAppointmentTable(sql);
+
+        //
     }
 
     private void changeGridPane() {

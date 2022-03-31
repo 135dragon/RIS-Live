@@ -71,6 +71,10 @@ public class Administrator extends Stage {
     private FilteredList<Patient> flPatient;
     private FilteredList<Appointment> flAppointment;
 
+    /*
+        Administrator Constructor.
+        Creates and populates the Administrator Page
+     */
     public Administrator() {
         this.setTitle("RIS - Radiology Information System (Administrator)");
         //Navbar
@@ -116,6 +120,9 @@ public class Administrator extends Stage {
         this.setScene(scene);
     }
 
+    /*
+        Logout
+     */
     private void logOut() {
         App.user = new User();
         Stage x = new Login();
@@ -124,6 +131,9 @@ public class Administrator extends Stage {
         this.close();
     }
 
+    /*
+        User Info Page
+     */
     private void userInfo() {
         Stage x = new UserInfo();
         x.show();
@@ -729,18 +739,20 @@ public class Administrator extends Stage {
         TableColumn orderIDCol = new TableColumn("Order ID");
         TableColumn orderCol = new TableColumn("Order");
         TableColumn buttonCol = new TableColumn("Delete");
+        TableColumn costCol = new TableColumn("Cost");
 
         //And all of the Value setting
         orderIDCol.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         orderCol.setCellValueFactory(new PropertyValueFactory<>("order"));
         buttonCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
+        costCol.setCellValueFactory(new PropertyValueFactory<>("cost"));
 
         //Couldn't put all the styling
         orderIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
         orderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         buttonCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         //Together again
-        table.getColumns().addAll(orderIDCol, orderCol, buttonCol);
+        table.getColumns().addAll(orderIDCol, orderCol, costCol, buttonCol);
         //Add Status Update Column:
     }
 
@@ -762,6 +774,7 @@ public class Administrator extends Stage {
             while (rs.next()) {
                 //What I receieve:  patientID, email, full_name, dob, address, insurance
                 Order order = new Order(rs.getString("orderID"), rs.getString("orders"));
+                order.setCost(rs.getFloat("cost"));
                 list.add(order);
             }
 
@@ -797,11 +810,13 @@ public class Administrator extends Stage {
         BorderPane y = new BorderPane();
         Label txt = new Label("Enter the order name below. ");
         TextField order = new TextField("order");
+        Label text = new Label(" Enter Cost. ");
+        TextField cost = new TextField("Cost");
         order.setPrefWidth(200);
         Button submit = new Button("Submit");
         submit.setId("complete");
 
-        VBox center = new VBox(txt, order, submit);
+        VBox center = new VBox(txt, order, text, cost, submit);
 
         center.setAlignment(Pos.CENTER);
         center.setPadding(new Insets(10));
@@ -813,7 +828,7 @@ public class Administrator extends Stage {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent eh) {
-                String sql = "INSERT INTO orderCodes(orders) VALUES ('" + order.getText() + "') ;";
+                String sql = "INSERT INTO orderCodes(orders,cost) VALUES ('" + order.getText() + "','" + cost.getText() + "') ;";
                 App.executeSQLStatement(sql);
                 populateTableModalities();
                 x.close();
@@ -824,6 +839,7 @@ public class Administrator extends Stage {
 
     //</editor-fold>
 //
+//<editor-fold defaultstate="collapsed" desc="Patient Alerts Section">
     private void patientAlertsPageView() {
         patientAlertsContainer.getChildren().clear();
 
@@ -1071,5 +1087,6 @@ public class Administrator extends Stage {
         }
         return dropdown;
     }
-
+    //</editor-fold>
+//
 }

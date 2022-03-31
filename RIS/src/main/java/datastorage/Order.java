@@ -15,10 +15,19 @@ public class Order {
     private String orderID;
     private String order;
     public Button placeholder = new Button("placeholder");
+    private float cost;
 
     public Order(String orderID, String order) {
         this.orderID = orderID;
         this.order = order;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
     }
 
     public String getOrder() {

@@ -24,6 +24,9 @@ public class App extends Application {
     public static String url = "";
     public static PGSimpleDataSource ds = new PGSimpleDataSource();
 
+    /**
+     * Primary beginning of application Launches the Login Page
+     */
     @Override
     public void start(Stage stage) {
 
@@ -34,44 +37,19 @@ public class App extends Application {
 
     }
 
+    /**
+     * Finds the root certificate to connect to the database.
+     *
+     */
     public static void main1(String[] args) {
-        //Create
         ds.setSslRootCert("root.crt");
-
-//        createAndPopulateTables(fileName); 
-//        populateTablesAdmin(fileName);
-//        createAppointmentTable(fileName);
-//        createPatientTable(fileName);
-//        createStatusCodesTable(fileName);
-//        createOrderCodesTable(fileName);
-//        createOrdersTable(fileName);
-//        createImageTable(fileName);
-//        createDocPatientConnectorTable(fileName);
-//        createRadReportTable(fileName);
-//        populateTablesStatus(fileName);
-//////        Duplication bug if you run these multiple times, leave commented out
-//        String sql = "DELETE FROM users;";
-//        executeSQLStatement(sql);
         launch();
     }
 
-    //Create a database
-    public static void createDatabase(String fileName) {
-//        try {
-//            Connection conn = DriverManager.getConnection(url);
-//            if (conn != null) {
-//                DatabaseMetaData meta = conn.getMetaData();
-//                System.out.println("The driver name is " + meta.getDriverName());
-//                System.out.println("A new database has been created.");
-//            }
-//            conn.close();
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-    }
-
-    //Functionality only does Users as of now.
-    //In future, all tables to be created will be put in here
+    /*
+      Creates tables Users, Roles Populates Roles Table 
+        1: Administrator 2: Receptionist 3: Technician 4: Radiologist 5: Referral Doctor 6: Biller
+     */
     public static void createAndPopulateTables(String fileName) {
         String sql = "CREATE TABLE users (\n"
                 + "	user_id INT PRIMARY KEY DEFAULT unique_rowid(),\n"
@@ -111,6 +89,9 @@ public class App extends Application {
         executeSQLStatement(sql);
     }
 
+    /*
+        Creates tables Appointments, AppointmentsOrdersConnector
+     */
     public static void createAppointmentTable(String fileName) {
         //apptId, patientID, fullname, time, address, insurance, referral, status, order
         String sql = "CREATE TABLE appointments (\n"
@@ -118,6 +99,7 @@ public class App extends Application {
                 + "	patient_id INT NOT NULL,\n"
                 + "	time VARCHAR(25) NOT NULL,\n"
                 + "     statusCode INT NOT NULL, "
+                + "     viewable INT DEFAULT 1, "
                 + "     UNIQUE(patient_id, time) "
                 + ");";
         executeSQLStatement(sql);
@@ -129,6 +111,9 @@ public class App extends Application {
         executeSQLStatement(sql1);
     }
 
+    /*
+        Creates table DocPatientConnector
+     */
     public static void createDocPatientConnectorTable(String fileName) {
         String sql = "CREATE TABLE docPatientConnector (\n"
                 + "	referralDocID INT,\n"
@@ -139,6 +124,9 @@ public class App extends Application {
         executeSQLStatement(sql);
     }
 
+    /*
+        Creates tables Patients, PatientAlerts, Flags, AlertsPatientConnector, RadPatientConnector
+     */
     public static void createPatientTable(String fileName) {
         String sql = "CREATE TABLE patients (\n"
                 + "	patientID INT PRIMARY KEY DEFAULT unique_rowid(),\n"
@@ -179,6 +167,9 @@ public class App extends Application {
         executeSQLStatement(sql);
     }
 
+    /*
+        Creates table StatusCode
+     */
     public static void createStatusCodesTable(String fileName) {
         String sql = "CREATE TABLE statusCode (\n"
                 + "	statusID INT PRIMARY KEY,\n"
@@ -187,15 +178,21 @@ public class App extends Application {
         executeSQLStatement(sql);
     }
 
+    /*
+        Creates table OrderCodes
+     */
     public static void createOrderCodesTable(String fileName) {
         String sql = "CREATE TABLE orderCodes (\n"
                 + "	orderID INT PRIMARY KEY DEFAULT unique_rowid(),\n"
-                + "	orders VARCHAR(45) UNIQUE \n"
-                + "     "
+                + "	orders VARCHAR(45) UNIQUE, \n"
+                + "     cost REAL "
                 + ");";
         executeSQLStatement(sql);
     }
 
+    /*
+        Creates table patientOrders
+     */
     public static void createOrdersTable(String fileName) {
         String sql = "CREATE TABLE patientOrders (\n"
                 + "	patientID INT ,\n"
@@ -205,6 +202,9 @@ public class App extends Application {
         executeSQLStatement(sql);
     }
 
+    /*
+        Creates table Images
+     */
     public static void createImageTable(String fileName) {
         String sql = "CREATE TABLE images (\n"
                 + "	imageID INT PRIMARY KEY DEFAULT unique_rowid(),\n"
@@ -215,6 +215,9 @@ public class App extends Application {
         executeSQLStatement(sql);
     }
 
+    /*
+        Creates table Report
+     */
     public static void createRadReportTable(String fileName) {
         String sql = "CREATE TABLE report(\n"
                 + "apptID INT UNIQUE, \n"
@@ -223,7 +226,11 @@ public class App extends Application {
         executeSQLStatement(sql);
     }
 
-    //In future, all population statements will be put in here
+    /*
+        Method which allows insertions / updates / deletes to the database.
+        Does not return anything.
+        All changes are reflected in the database.
+     */
     public static void executeSQLStatement(String sql) {
         try {
 
@@ -238,6 +245,9 @@ public class App extends Application {
         }
     }
 
+    /*
+        Populates statusCode table with all statuses.
+     */
     public static void populateTablesStatus(String fileName) {
         String sql = "INSERT INTO statusCode VALUES ('0', 'Patient Did Not Show');\n";
         String sql1 = "INSERT INTO statusCode VALUES ('1', 'Appointment Scheduled');\n";
@@ -260,6 +270,24 @@ public class App extends Application {
         executeSQLStatement(sql8);
     }
 
+    /*
+        Creates table PatientPayments.
+     */
+    public static void createPatientPayment() {
+        //String sql2 = "DROP TABLE patientPayments;";
+        //executeSQLStatement(sql2);
+        String sql = "CREATE TABLE patientPayments(\n"
+                + "apptID INTEGER, \n"
+                + "time TEXT, \n"
+                + "patientPayment REAL, "
+                + "byPatient INTEGER" // when byPatient will be one and when not will be zero
+                + ");";
+        executeSQLStatement(sql);
+    }
+
+    /*
+        Populates the Admin table
+     */
     public static void populateTablesAdmin(String fileName) {
         String sql = "INSERT INTO users(email, full_name, username, password, role) VALUES ('god@gmail.com', 'Administrator Dave', 'admin', 'admin', '1');\n";
         executeSQLStatement(sql);

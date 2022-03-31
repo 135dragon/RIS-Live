@@ -395,7 +395,7 @@ public class Technician extends Stage {
             emptyImages = true;
         } else {
             String array[] = order.split(",");
-            if (list.size() < array.length) {
+            if (list.size() + 1 < array.length) {
                 emptyImages = true;
             }
 

@@ -15,9 +15,11 @@ public class Appointment {
 
     String apptID, patientID;
     String time, status, order;
-
+    float total;
     String fullName;
     public Button placeholder = new Button("Placeholder");
+    public Button button = new Button("Button");
+    public Button placeholder1 = new Button("Placeholder");
 
     public Appointment(String apptID, String patientID, String time, String status, String order) {
         this.apptID = apptID;
@@ -25,6 +27,30 @@ public class Appointment {
         this.time = time;
         this.status = status;
         this.order = order;
+    }
+
+    public Button getPlaceholder1() {
+        return placeholder1;
+    }
+
+    public void setPlaceholder1(Button placeholder1) {
+        this.placeholder1 = placeholder1;
+    }
+
+    public Button getButton() {
+        return button;
+    }
+
+    public void setButton(Button button) {
+        this.button = button;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
     }
 
     public Button getPlaceholder() {
