@@ -174,7 +174,7 @@ public class Receptionist extends Stage {
         updateAppt.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Set Column Widths
-        apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
+        apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.04));
         firstNameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         timeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));

@@ -66,11 +66,10 @@ public class Billing extends Stage {
     TextField search = new TextField("Search Appointments");
 
     //Buttons
-    Button addBilling = new Button("Add Bill");
     Button refreshTable = new Button("Refresh Appointments");
     //Containers
     HBox searchContainer = new HBox(choiceBox, search);
-    HBox buttonContainer = new HBox(addBilling, refreshTable, searchContainer);
+    HBox buttonContainer = new HBox(refreshTable, searchContainer);
     VBox tableContainer = new VBox(table, buttonContainer);
 
 //</editor-fold>
@@ -107,12 +106,7 @@ public class Billing extends Stage {
 //                addAppointment();
 //            }
 //        });
-        addBilling.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                addBilling();
-            }
-        });
+
         refreshTable.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -193,13 +187,13 @@ public class Billing extends Stage {
         delAppt.setCellValueFactory(new PropertyValueFactory<>("placeholder1"));
         makePayment.setCellValueFactory(new PropertyValueFactory<>("button"));
         //Set Column Widths
-        apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
-        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.04));
+        apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
+        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         firstNameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         timeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.06));
         orderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
-        updateAppt.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-        status.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
+        updateAppt.prefWidthProperty().bind(table.widthProperty().multiply(0.08));
+        status.prefWidthProperty().bind(table.widthProperty().multiply(0.08));
         totalCost.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
 
         //Add columns to table
@@ -303,10 +297,6 @@ public class Billing extends Stage {
 //    }
     //On button press, open up a new stage (calls private nested class)
 
-    private void addBilling() {
-
-    }
-
     private float calculateTotalCost(Appointment appt) {
 
         String sql = "Select orderCodes.cost "
@@ -352,16 +342,18 @@ public class Billing extends Stage {
 // code goes here
 //header
         HBox header = new HBox();
-        Label patientName = new Label(appt.getFullName());
-        Label patientEmail = new Label(getEmail(appt.getPatientID()));
-        Label patientAddress = new Label(getAddress(appt.getPatientID()));
-        Label patientInsurance = new Label(getInsurance(appt.getPatientID()));
+        Label patientName = new Label("Patient Name:\n" + appt.getFullName());
+        Label patientEmail = new Label("Email:\n" + getEmail(appt.getPatientID()));
+        Label patientAddress = new Label("Address:\n" + getAddress(appt.getPatientID()));
+        Label patientInsurance = new Label("Insurance:\n" + getInsurance(appt.getPatientID()));
         header.getChildren().addAll(patientName, patientEmail, patientAddress, patientInsurance);
         bp.setTop(header);
 //end header
 //center
         float paybox = 0;
         GridPane grid = new GridPane();
+        grid.setGridLinesVisible(true);
+
         VBox center = new VBox(grid);
         ScrollPane sp = new ScrollPane(center);
         String order[] = appt.getOrder().split(",");
@@ -375,7 +367,8 @@ public class Billing extends Stage {
                     paybox += a.getCost();
                 }
             }
-            HBox he = new HBox(tempOrder, tempCost);
+            Label apptDate = new Label(appt.getTime().split(" ")[0]);
+            grid.add(apptDate, 1, i);
             grid.add(tempOrder, 0, i);
             grid.add(tempCost, 2, i);
             counter = i;
@@ -389,7 +382,22 @@ public class Billing extends Stage {
                 byWhom.setText("Insurance Paid");
             }
             Label tempPaymentDate = new Label(p.getTime());
-            Label tempPayment = new Label("" + p.getPayment());
+            float num = -1 * p.getPayment();
+            String positive = "";
+            if (num > 0) {
+                positive = "+";
+            }
+            Label tempPayment = new Label(positive + num);
+            if (num > 0) {
+                byWhom.setId("shadeRed");
+                tempPaymentDate.setId("shadeRed");
+                tempPayment.setId("shadeRed");
+            } else {
+                byWhom.setId("shadeGreen");
+                tempPaymentDate.setId("shadeGreen");
+                tempPayment.setId("shadeGreen");
+
+            }
 
             grid.add(byWhom, 0, counter);
             grid.add(tempPaymentDate, 1, counter);
@@ -400,10 +408,29 @@ public class Billing extends Stage {
         bp.setCenter(sp);
 //end center
 //footer
+        Button btn = new Button("Go Back");
+        btn.setId("cancel");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent eh) {
+                x.close();
+            }
+        });
+        Button btn1 = new Button("Make Payment");
+        btn1.setId("complete");
+        btn1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent eh) {
+                makePayment(appt);
+                x.close();
+                viewBill(appt);
+            }
+        });
         HBox footer = new HBox();
         Label blank = new Label("Total Bill Remaining: ");
         Label tc = new Label("" + paybox);
-        footer.getChildren().addAll(blank, tc);
+
+        footer.getChildren().addAll(btn, blank, tc, btn1);
         bp.setBottom(footer);
 //end footer
         x.show();
@@ -561,7 +588,6 @@ public class Billing extends Stage {
         Button b = new Button("Submit");
         hello.getChildren().addAll(enterpay, ep, dropdown, b);
         container.getChildren().addAll(hello);
-        x.show();
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent eh) {
@@ -581,6 +607,7 @@ public class Billing extends Stage {
                 //sql = "INSERT INTO patientPayments(apptID, time, patientPayment, byPatient) VALUES ('"+appt.getApptID()+"', '"+LocalDate.now() +"' , '"+ep.getText()+"', '1' )";
             }
         });
+        x.showAndWait();
     }
 
     private void removeAppointment(Appointment appt) {

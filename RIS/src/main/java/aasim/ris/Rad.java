@@ -158,7 +158,7 @@ public class Rad extends Stage {
         reportCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Couldn't put all the styling
-        patientIDCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.04));
+        patientIDCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.09));
         fullNameCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.06));
         timeCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.2));
         orderIDCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.3));

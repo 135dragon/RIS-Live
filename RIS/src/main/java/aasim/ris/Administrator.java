@@ -165,13 +165,13 @@ public class Administrator extends Stage {
         buttonCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Couldn't put all the styling
-        pfpCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
-        userIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
+        pfpCol.prefWidthProperty().bind(table.widthProperty().multiply(0.03));
+        userIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         emailCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         fullNameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         roleCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-        enabledCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
+        enabledCol.prefWidthProperty().bind(table.widthProperty().multiply(0.04));
         buttonCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         table.setStyle("-fx-background-color: #25A18E; -fx-text-fill: WHITE; ");
         //Together again
@@ -511,7 +511,7 @@ public class Administrator extends Stage {
         insuranceCol.setCellValueFactory(new PropertyValueFactory<>("insurance"));
 
         //Couldn't put the table
-        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
+        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         fullNameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         emailCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         DOBCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
@@ -635,8 +635,8 @@ public class Administrator extends Stage {
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         //Set Column Widths
-        apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
-        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.04));
+        apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
+        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         firstNameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         timeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         orderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
@@ -748,7 +748,7 @@ public class Administrator extends Stage {
         costCol.setCellValueFactory(new PropertyValueFactory<>("cost"));
 
         //Couldn't put all the styling
-        orderIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
+        orderIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         orderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         buttonCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         //Together again
@@ -828,6 +828,9 @@ public class Administrator extends Stage {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent eh) {
+                if (!InputValidation.validatePayment(cost.getText())) {
+                    return;
+                }
                 String sql = "INSERT INTO orderCodes(orders,cost) VALUES ('" + order.getText() + "','" + cost.getText() + "') ;";
                 App.executeSQLStatement(sql);
                 populateTableModalities();
@@ -877,7 +880,7 @@ public class Administrator extends Stage {
         buttonCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Couldn't put all the styling
-        alertIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.05));
+        alertIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         alertCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         flagsCol.prefWidthProperty().bind(table.widthProperty().multiply(0.5));
         buttonCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
