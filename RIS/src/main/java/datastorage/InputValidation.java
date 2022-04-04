@@ -16,7 +16,7 @@ import javafx.scene.control.Alert;
 public class InputValidation {
 
     public static boolean validateName(String name) {
-        if (name.isBlank() || !name.matches("^[a-zA-Z]+ [a-zA-Z]+$")) {
+        if (name == null || name.isBlank() || !name.matches("^[a-zA-Z]+ [a-zA-Z]+$")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
@@ -52,7 +52,7 @@ public class InputValidation {
     }
 
     public static boolean validateEmail(String email) {
-        if (email.isBlank() || !email.matches("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
+        if (email == null || email.isBlank() || !email.matches("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
@@ -76,7 +76,7 @@ public class InputValidation {
     }
 
     public static boolean validateDate(String date) {
-        if (date == null || !date.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
+        if (date == null || date.isBlank() || !date.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
@@ -127,7 +127,7 @@ public class InputValidation {
     }
 
     public static boolean validateTime(String time) {
-        if (time.isBlank() || !time.matches("(^([0-9]|[0-1][0-9]|[2][0-3]):([0-5][0-9])$)")) {
+        if (time == null || time.isBlank() || !time.matches("(^([0-9]|[0-1][0-9]|[2][0-3]):([0-5][0-9])$)")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
@@ -169,4 +169,20 @@ public class InputValidation {
         }
         return true;
     }
+
+    public static boolean validateDOB(String date) {
+        if (!validateDate(date)) {
+            return false;
+        }
+        if (LocalDate.now().isBefore(LocalDate.parse(date))) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Error");
+            a.setHeaderText("Try Again");
+            a.setContentText("Please enter a valid Date of Birth.\n");
+            a.show();
+            return false;
+        }
+        return true;
+    }
+
 }

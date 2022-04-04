@@ -402,7 +402,7 @@ public class ReferralDoctor extends Stage {
             @Override
             public void handle(ActionEvent t) {
                 //Validation
-                if (!InputValidation.validateDate(datePicker.getValue().toString())) {
+                if (!InputValidation.validateDOB(datePicker.getValue().toString())) {
                     return;
                 }
                 if (!InputValidation.validateAddress(address.getText())) {
