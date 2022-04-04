@@ -175,12 +175,12 @@ public class Receptionist extends Stage {
 
         //Set Column Widths
         apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
-        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.04));
+        patientIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));
         firstNameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         timeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-        orderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
+        orderCol.prefWidthProperty().bind(table.widthProperty().multiply(0.3));
         updateAppt.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-        status.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
+        status.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
         //Add columns to table
         table.getColumns().addAll(apptIDCol, patientIDCol, firstNameCol, timeCol, orderCol, status, updateAppt);
         table.setStyle("-fx-background-color: #25A18E; -fx-text-fill: WHITE; ");

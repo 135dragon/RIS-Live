@@ -47,6 +47,7 @@ import javafx.util.Callback;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -382,6 +383,14 @@ public class Rad extends Stage {
         confirm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                if (reportText.getText().isBlank()) {
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setTitle("Error");
+                    a.setHeaderText("Try Again");
+                    a.setContentText("Please enter a valid report.\n");
+                    a.show();
+                    return;
+                }
                 addReportToDatabase(reportText.getText(), apptId);
                 updateAppointmentStatus(patID, apptId);
                 x.close();
