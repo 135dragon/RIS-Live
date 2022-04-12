@@ -64,7 +64,7 @@ public class Rad extends Stage {
     //navbar
 
     HBox navbar = new HBox();
-    Label username = new Label("Logged In as: " + App.user.getFullName());
+    Label username = new Label("Logged In as Radiologist: " + App.user.getFullName());
     ImageView pfp = new ImageView(App.user.getPfp());
 
     Button logOut = new Button("Log Out");
