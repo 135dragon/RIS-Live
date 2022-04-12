@@ -44,7 +44,7 @@ public class Administrator extends Stage {
 
     //Navbar
     HBox navbar = new HBox();
-    Label username = new Label("Logged In as: " + App.user.getFullName());
+    Label username = new Label("Logged In as Administrator: " + App.user.getFullName());
     ImageView pfp = new ImageView(App.user.getPfp());
     Label users = new Label("Users");
     Label patients = new Label("Patients");

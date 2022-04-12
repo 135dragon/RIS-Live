@@ -58,6 +58,8 @@ public class Login extends Stage {
     VBox center = new VBox();
     Scene scene = new Scene(center, 1000, 1000);
 
+    //Constructor. Displays view
+    //
     Login() {
         //Setting the Title
         this.setTitle("RIS- Radiology Information System (Logging In)");
@@ -228,6 +230,7 @@ public class Login extends Stage {
 
     }
 
+    //Checks for valid database connection
     private void connectToDatabase() {
         try {
 

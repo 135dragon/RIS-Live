@@ -53,7 +53,7 @@ public class Technician extends Stage {
     //Navbar
 
     HBox navbar = new HBox();
-    Label username = new Label("Logged In as: " + App.user.getFullName());
+    Label username = new Label("Logged In as Technician: " + App.user.getFullName());
     ImageView pfp = new ImageView(App.user.getPfp());
     Button logOut = new Button("Log Out");
 

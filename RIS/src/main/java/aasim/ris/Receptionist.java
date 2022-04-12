@@ -54,7 +54,7 @@ public class Receptionist extends Stage {
     //Stage Structure
     HBox navbar = new HBox();
     Button logOut = new Button("Log Out");
-    Label username = new Label("Logged In as: " + App.user.getFullName());
+    Label username = new Label("Logged In as Receptionist: " + App.user.getFullName());
     ImageView pfp = new ImageView(App.user.getPfp());
 
     BorderPane main = new BorderPane();
