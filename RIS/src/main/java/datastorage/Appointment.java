@@ -6,6 +6,7 @@ package datastorage;
 
 import java.io.InputStream;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 /**
  *
@@ -83,6 +84,22 @@ public class Appointment {
 
     public String getStatus() {
         return status;
+    }
+
+    public Label getStatusAsLabel() {
+        Label val = new Label(status);
+        if (val.getText().contains("Completed")) {
+            val.setId("colorGreen");
+        } else if (val.getText().contains("Uploaded")) {
+            val.setId("colorOrange");
+        } else if (val.getText().contains("Cancelled") || val.getText().contains("Not Show")) {
+            val.setId("colorRed");
+        } else if (val.getText().contains("received")) {
+            val.setId("colorBlue");
+        } else if (val.getText().contains("Checked")) {
+            val.setId("colorOrange");
+        }
+        return val;
     }
 
     public void setStatus(String status) {

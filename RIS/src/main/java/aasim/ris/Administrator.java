@@ -161,7 +161,7 @@ public class Administrator extends Stage {
         fullNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         usernameCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         roleCol.setCellValueFactory(new PropertyValueFactory<>("roleVal"));
-        enabledCol.setCellValueFactory(new PropertyValueFactory<>("enabled"));
+        enabledCol.setCellValueFactory(new PropertyValueFactory<>("enabledLabel"));
         buttonCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Couldn't put all the styling
@@ -632,7 +632,7 @@ public class Administrator extends Stage {
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
         orderCol.setCellValueFactory(new PropertyValueFactory<>("order"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        status.setCellValueFactory(new PropertyValueFactory<>("statusAsLabel"));
 
         //Set Column Widths
         apptIDCol.prefWidthProperty().bind(table.widthProperty().multiply(0.09));

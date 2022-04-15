@@ -132,9 +132,9 @@ public class Technician extends Stage {
     private void createTableAppointments() {
         //All of the Columns
         TableColumn patientIDCol = new TableColumn("Patient ID");
-        TableColumn fullNameCol = new TableColumn("Full Name");
+        TableColumn fullNameCol = new TableColumn("Name");
         TableColumn timeCol = new TableColumn("Time");
-        TableColumn orderIDCol = new TableColumn("Orders Requested");
+        TableColumn orderIDCol = new TableColumn("Orders ");
         TableColumn statusCol = new TableColumn("Appointment Status");
         TableColumn updateStatusCol = new TableColumn("Open Appointment");
 
@@ -143,15 +143,15 @@ public class Technician extends Stage {
         fullNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
         orderIDCol.setCellValueFactory(new PropertyValueFactory<>("order"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        statusCol.setCellValueFactory(new PropertyValueFactory<>("statusAsLabel"));
         updateStatusCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Couldn't put all the styling
-        patientIDCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.09));
-        fullNameCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.06));
-        timeCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.2));
+//        patientIDCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.09));
+//        fullNameCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.06));
+//        timeCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.2));
         orderIDCol.prefWidthProperty().bind(appointmentsTable.widthProperty().multiply(0.3));
-        appointmentsTable.setStyle("-fx-background-color: #25A18E; -fx-text-fill: WHITE; ");
+//        appointmentsTable.setStyle("-fx-background-color: #25A18E; -fx-text-fill: WHITE; ");
         //Together again
         appointmentsTable.getColumns().addAll(patientIDCol, fullNameCol, timeCol, orderIDCol, statusCol, updateStatusCol);
         //Add Status Update Column:

@@ -88,5 +88,17 @@
 }
 
 #shadeGreen{
-        -fx-background-color: rgba(8, 136, 8, 0.1);    
+    -fx-background-color: rgba(8, 136, 8, 0.1);
+}
+#colorRed{
+    -fx-text-fill: red;
+}
+#colorGreen{
+    -fx-text-fill: green;
+}
+#colorOrange{
+    -fx-text-fill: #cc6600;
+}
+#colorBlue{
+    -fx-text-fill:blue;
 }

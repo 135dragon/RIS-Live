@@ -168,10 +168,10 @@ public class ReferralDoctor extends Stage {
     private void createTablePatients() {
         //All of the Columns
         TableColumn patientIDCol = new TableColumn("Patient ID");
-        TableColumn fullNameCol = new TableColumn("Full Name");
+        TableColumn fullNameCol = new TableColumn("Name");
         TableColumn emailCol = new TableColumn("Email");
-        TableColumn DOBCol = new TableColumn("Date of Birth");
-        TableColumn updateStatusCol = new TableColumn("View Patient Overview");
+        TableColumn DOBCol = new TableColumn("D.O.B");
+        TableColumn updateStatusCol = new TableColumn("Patient Information");
 
         //And all of the Value setting
         patientIDCol.setCellValueFactory(new PropertyValueFactory<>("patientID"));
@@ -181,11 +181,11 @@ public class ReferralDoctor extends Stage {
         updateStatusCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
 
         //Couldn't put the table
-        patientIDCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.09));
-        fullNameCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
-        emailCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.2));
-        DOBCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
-        updateStatusCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.5));
+//        patientIDCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.09));
+//        fullNameCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
+//        emailCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.2));
+//        DOBCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.1));
+//        updateStatusCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.5));
 
         patientsTable.setStyle("-fx-background-color: #25A18E; -fx-text-fill: WHITE; ");
         //back together again
@@ -485,7 +485,7 @@ public class ReferralDoctor extends Stage {
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("apptID"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
         ordersCol.setCellValueFactory(new PropertyValueFactory<>("order"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        statusCol.setCellValueFactory(new PropertyValueFactory<>("statusAsLabel"));
         updateStatusCol.setCellValueFactory(new PropertyValueFactory<>("placeholder"));
         //Set tableColumn sizes
         apptIDCol.prefWidthProperty().bind(patientsTable.widthProperty().multiply(0.09));
