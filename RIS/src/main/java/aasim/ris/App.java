@@ -44,6 +44,20 @@ public class App extends Application {
     public static void main1(String[] args) {
         ds.setSslRootCert("root.crt");
         launch();
+        
+        /* Populate the database.
+        createAndPopulateTables(fileName);
+        createAppointmentTable(fileName);
+        createDocPatientConnectorTable(fileName);
+        createPatientTable(fileName);
+        createStatusCodesTable(fileName);
+        createOrderCodesTable(fileName);
+        createImageTable(fileName);
+        createRadReportTable(fileName);
+        populateTablesStatus(fileName);
+        createPatientPayment();
+        populateTablesAdmin(fileName);
+        */
     }
 
     /*
