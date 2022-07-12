@@ -1,6 +1,5 @@
 # RIS-Live
-RIS Project but Live
-Project to recreate, update, and maintain a chosen Radiology Information System.
+CSCI3300 Summer 2022 Radiology Information System project
 
 Check out: https://github.com/coopman611/project for the demo version (easy install, local database)
 
