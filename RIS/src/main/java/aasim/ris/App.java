@@ -52,6 +52,7 @@ public class App extends Application {
         createPatientTable(fileName);
         createStatusCodesTable(fileName);
         createOrderCodesTable(fileName);
+        createOrdersTable(fileName);
         createImageTable(fileName);
         createRadReportTable(fileName);
         populateTablesStatus(fileName);
