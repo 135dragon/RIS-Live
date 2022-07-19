@@ -16,7 +16,7 @@ import javafx.scene.control.Alert;
 public class InputValidation {
 
     public static boolean validateName(String name) {
-        if (name.matches("^[a-zA-Z\\-]+ [a-zA-Z\\-]+$") || name.matches("^[a-zA-Z\\-]+ [a-zA-Z\\-]+ [a-zA-Z\\.]+$")) {
+        if (name.matches("^[a-zA-Z\\-]+ [a-zA-Z\\-]+(?: [a-zA-Z\\.]+)?$")) {
             return true;
         }
         Alert a = new Alert(Alert.AlertType.INFORMATION); 
