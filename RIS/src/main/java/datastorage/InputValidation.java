@@ -15,16 +15,16 @@ import javafx.scene.control.Alert;
  */
 public class InputValidation {
 
-    public static boolean validateName(String name) {
-        if (name == null || name.isBlank() || !name.matches("^[a-zA-Z\\-]+ [a-zA-Z\\-]+$")) {
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
+public static boolean validateName(String name) {
+        if (name.matches("^[a-zA-Z\\-]+ [a-zA-Z\\-]+$") || name.matches("^[a-zA-Z\\-]+ [a-zA-Z\\-]+ [a-zA-Z\\.]+$")) {
+            return true;
+        }
+            Alert a = new Alert(Alert.AlertType.INFORMATION); 
             a.setTitle("Error");
             a.setHeaderText("Try Again");
             a.setContentText("Please enter a valid full name. \n");
             a.show();
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public static boolean validateUsername(String name) {
