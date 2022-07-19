@@ -16,7 +16,7 @@ import javafx.scene.control.Alert;
 public class InputValidation {
 
     public static boolean validateName(String name) {
-        if (name == null || name.isBlank() || !name.matches("^[a-zA-Z]+ [a-zA-Z]+$")) {
+        if (name == null || name.isBlank() || !name.matches("^[a-zA-Z\\-]+ [a-zA-Z\\-]+$")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Error");
             a.setHeaderText("Try Again");
